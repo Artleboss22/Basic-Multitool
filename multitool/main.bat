@@ -9,7 +9,7 @@ cls
 echo.
 echo.
 echo  ================================================================================
-echo                         ARTLEBOSS - MULTITOOL v1.0
+echo                         ARTLEBOSS - MULTITOOL v1.1
 echo  ================================================================================
 echo	║
 echo	║
@@ -80,10 +80,39 @@ goto menu
 
 :angryip
 cls
-if exist "C:\Users\Arthur Godart\OneDrive\Desktop\multitool\Angry IP Scanner\ipscan.exe" (
-    start "" "C:\Users\Arthur Godart\OneDrive\Desktop\multitool\Angry IP Scanner\ipscan.exe"
+echo Recherche d'Angry IP Scanner...
+
+REM Chemins courants à vérifier
+set "paths[0]=%ProgramFiles%\Angry IP Scanner\ipscan.exe"
+set "paths[1]=%ProgramFiles(x86)%\Angry IP Scanner\ipscan.exe"
+set "paths[2]=%LOCALAPPDATA%\Programs\Angry IP Scanner\ipscan.exe"
+set "paths[3]=%USERPROFILE%\Desktop\Angry IP Scanner\ipscan.exe"
+set "paths[4]=%USERPROFILE%\OneDrive\Desktop\Angry IP Scanner\ipscan.exe"
+set "paths[5]=%USERPROFILE%\Documents\Angry IP Scanner\ipscan.exe"
+set "paths[6]=%USERPROFILE%\Downloads\Angry IP Scanner\ipscan.exe"
+
+REM Vérifier chaque chemin
+for /L %%i in (0,1,6) do (
+    call set "current_path=%%paths[%%i]%%"
+    call if exist "%%current_path%%" (
+        start "" "%%current_path%%"
+        goto menu
+    )
+)
+
+REM Si non trouvé, recherche dans tout le disque C: (plus lent)
+echo Recherche approfondie en cours...
+for /f "delims=" %%a in ('dir /s /b "C:\ipscan.exe" 2^>nul') do (
+    start "" "%%a"
     goto menu
 )
+
+REM Si toujours pas trouvé
+echo.
+echo ERREUR: Angry IP Scanner n'a pas ete trouve sur cet ordinateur.
+echo Veuillez l'installer ou le telecharger.
+echo.
+pause
 
 REM Si non installé - redirection automatique vers la page d'installation
 goto install_angryip
@@ -281,4 +310,5 @@ cls
 echo.
 echo Thank you for using the Multitool!
 timeout /t 2 >nul
+
 exit
