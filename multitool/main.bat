@@ -107,7 +107,7 @@ echo.
 set "prank="
 set /p prank="Enter your prank: "
 if "%prank%"=="1" (
-	echo
+	@echo
 	:X
 	start cmd
 	set "prank="
@@ -818,4 +818,5 @@ echo.
 echo Thank you for using the Multitool!
 timeout /t 1 >nul
 exit
+
 
